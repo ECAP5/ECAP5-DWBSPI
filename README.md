@@ -1,0 +1,24 @@
+<p float="left">
+<a href="https://ecap5.github.io/ECAP5-DWBSPI/report.html"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fgist.githubusercontent.com%2Fcchaine%2Fe7f2fbbb68699f4a686d324134ce85fe%2Fraw%2Ftest-result-badge.json?"/></a>
+<a href="https://ecap5.github.io/ECAP5-DWBSPI/report.html"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fgist.githubusercontent.com%2Fcchaine%2Fe7f2fbbb68699f4a686d324134ce85fe%2Fraw%2Ftraceability-result-badge.json?"/></a>
+</p>
+
+
+<br />
+<div align="center">
+    <img src="docs/src/assets/logo-rounded.svg" alt="Logo" width="80" height="80">
+
+  <h3 align="center">ECAP5-DWBSPI</h3>
+
+  <p align="center">
+    SPI peripheral implementation accessible through a Wishbone bus.
+    <br />
+    <a href="https://ecap5.github.io/ECAP5-DWBSPI/"><strong>Explore the docs »</strong></a>
+    <br />
+  </p>
+</div>
+
+<!-- LICENSE -->
+## License
+
+Distributed under the GPL-3.0 license. See `LICENSE.txt` for more information.
