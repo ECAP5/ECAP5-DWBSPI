@@ -34,6 +34,22 @@ add_lint_target(
 
 # Add testbenches
 add_testbench(
+  MODULE            spi_prescaler
+  LIBS              ecap5_dwbspi
+  BENCH_DIR         ${BENCH_DIR}
+  TESTDATA_DIR      ${TESTDATA_DIR}
+  TEST_INCLUDE_DIRS ${TEST_INCLUDE_DIRS}
+)
+
+add_testbench(
+  MODULE            spi_frontend
+  LIBS              ecap5_dwbspi
+  BENCH_DIR         ${BENCH_DIR}
+  TESTDATA_DIR      ${TESTDATA_DIR}
+  TEST_INCLUDE_DIRS ${TEST_INCLUDE_DIRS}
+)
+
+add_testbench(
   MODULE            ecap5_dwbspi
   LIBS              ecap5_dwbspi
   BENCH_DIR         ${BENCH_DIR}

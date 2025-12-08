@@ -21,6 +21,10 @@
  */
 
 module ecap5_dwbspi #(
+  localparam SPI_SR = 0,
+  localparam SPI_CR = 1,
+  localparam SPI_RXDR = 2,
+  localparam SPI_TXDR = 3
 )(
   input   logic         clk_i,
   input   logic         rst_i,
@@ -36,7 +40,15 @@ module ecap5_dwbspi #(
   input   logic        wb_stb_i,
   output  logic        wb_ack_o,
   input   logic        wb_cyc_i,
-  output  logic        wb_stall_o
+  output  logic        wb_stall_o,
+
+  //=================================
+  //    SPI interface
+
+  output logic spi_cs_o,
+  output logic spi_clk_o,
+  output logic spi_mosi_o,
+  input  logic spi_miso_i
 );
 
 /*****************************************/
@@ -48,9 +60,17 @@ logic       mem_read, mem_write;
 logic[31:0] mem_read_data_d, mem_read_data_q, 
             mem_write_data;
 
+logic transmit_d, transmit_q;
+
 /*****************************************/
 /*        Memory mapped registers        */
 /*****************************************/
+
+logic[15:0] cr_prescaler_d, cr_prescaler_q;
+logic       cr_cs_d, cr_cs_q;
+logic      sr_txe_d, sr_txe_q;
+logic[7:0] txdr_txd_d, txdr_txd_q;
+logic[7:0] rxdr_rxd_d, rxdr_rxd_q;
 
 /*****************************************/
 
@@ -68,5 +88,53 @@ ecap5_dwbmmsc wb_interface_inst (
   .write_data_o (mem_write_data),
   .sel_o          ()
 );
+
+always_comb begin : register_access
+  cr_prescaler_d  =  cr_prescaler_q;
+  cr_cs_d         =  cr_cs_q;
+  txdr_txd_d      =  txdr_txd_q;
+  rxdr_rxd_d      =  rxdr_rxd_q;
+  transmit_d      = 0;
+
+  // Set the data output for read requests
+  case(mem_addr[7:2])
+    SPI_SR:   mem_read_data_d = {31'b0, sr_txe_q};
+    SPI_CR:   mem_read_data_d = {cr_prescaler_q, 15'b0, cr_cs_q};
+    SPI_RXDR: mem_read_data_d = {24'b0, rxdr_rxd_q};
+    default:  mem_read_data_d = '0;
+  endcase
+
+  // Set the register data for write requests
+  if(mem_write) begin
+    case(mem_addr[7:2])
+      SPI_CR: begin
+        cr_prescaler_d  =  mem_write_data[31:16];
+        cr_cs_d         =  mem_write_data[0];
+      end
+      SPI_TXDR: begin
+        txdr_txd_d = mem_write_data[7:0];
+        transmit_d = 1;
+      end
+    endcase
+  end
+end
+
+always_ff @(posedge clk_i) begin
+  if(rst_i) begin
+    cr_prescaler_q  <=  '0;
+    cr_cs_q         <=  0;
+    rxdr_rxd_q      <=  '0;
+    txdr_txd_q      <=  '0;
+
+    transmit_q      <=  0;
+  end else begin
+    cr_prescaler_q  <=  cr_prescaler_d;
+    cr_cs_q         <=  cr_cs_d;
+    rxdr_rxd_q      <=  rxdr_rxd_d;
+    txdr_txd_q      <=  txdr_txd_d;
+
+    transmit_q      <=  transmit_d;
+  end
+end
 
 endmodule // ecap5_dwbspi

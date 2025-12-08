@@ -71,6 +71,8 @@ add_dependency(
 add_library(ecap5_dwbspi INTERFACE)
 target_sources(ecap5_dwbspi INTERFACE
   ${CMAKE_CURRENT_LIST_DIR}/src/ecap5_dwbspi.sv
+  ${CMAKE_CURRENT_LIST_DIR}/src/spi_prescaler.sv
+  ${CMAKE_CURRENT_LIST_DIR}/src/spi_frontend.sv
 )
 target_link_libraries(ecap5_dwbspi INTERFACE 
   ecap5_dwbmmsc

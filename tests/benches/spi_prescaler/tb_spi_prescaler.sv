@@ -20,55 +20,32 @@
  * along with ECAP5-DWBSPI.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-module tb_ecap5_dwbspi
+module tb_spi_prescaler
 (
   input   int          testcase,
 
   input   logic         clk_i,
   input   logic         rst_i,
 
-  //=================================
-  //    Memory interface
+  input   logic        cs_i,
+  input   logic        prescaler_stb_i,
+  input   logic[15:0]  prescaler_i,
 
-  input   logic[31:0]  wb_adr_i,
-  output  logic[31:0]  wb_dat_o,
-  input   logic[31:0]  wb_dat_i,
-  input   logic        wb_we_i,
-  input   logic[3:0]   wb_sel_i,
-  input   logic        wb_stb_i,
-  output  logic        wb_ack_o,
-  input   logic        wb_cyc_i,
-  output  logic        wb_stall_o,
-
-  //=================================
-  //    SPI interface
-
-  output logic spi_cs_o,
-  output logic spi_clk_o,
-  output logic spi_mosi_o,
-  input  logic spi_miso_i
+  output  logic        high_pulse_o,
+  output  logic        low_pulse_o
 );
 
-ecap5_dwbspi #(
+spi_prescaler #(
 ) dut (
   .clk_i           (clk_i),
   .rst_i           (rst_i),
 
-  .wb_adr_i   (wb_adr_i),
-  .wb_dat_o   (wb_dat_o),
-  .wb_dat_i   (wb_dat_i),
-  .wb_we_i    (wb_we_i),
-  .wb_sel_i   (wb_sel_i),
-  .wb_stb_i   (wb_stb_i),
-  .wb_ack_o   (wb_ack_o),
-  .wb_cyc_i   (wb_cyc_i),
-  .wb_stall_o (wb_stall_o),
-
-  .spi_cs_o (spi_cs_o),
-  .spi_clk_o (spi_clk_o),
-  .spi_mosi_o (spi_mosi_o),
-  .spi_miso_i (spi_miso_i)
+  .cs_i (cs_i),
+  .prescaler_stb_i (prescaler_stb_i),
+  .prescaler_i (prescaler_i),
+  .high_pulse_o (high_pulse_o),
+  .low_pulse_o (low_pulse_o)
 );
 
-endmodule // tb_ecap5_dwbspi
+endmodule // tb_spi_prescaler
 
