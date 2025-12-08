@@ -32,7 +32,8 @@ module tb_spi_prescaler
   input   logic[15:0]  prescaler_i,
 
   output  logic        high_pulse_o,
-  output  logic        low_pulse_o
+  output  logic        low_pulse_o,
+  output  logic        prescaled_clk_o
 );
 
 spi_prescaler #(
@@ -44,7 +45,8 @@ spi_prescaler #(
   .prescaler_stb_i (prescaler_stb_i),
   .prescaler_i (prescaler_i),
   .high_pulse_o (high_pulse_o),
-  .low_pulse_o (low_pulse_o)
+  .low_pulse_o (low_pulse_o),
+  .prescaled_clk_o (prescaled_clk_o)
 );
 
 endmodule // tb_spi_prescaler

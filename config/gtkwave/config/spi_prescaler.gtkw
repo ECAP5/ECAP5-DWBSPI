@@ -1,0 +1,69 @@
+[*]
+[*] GTKWave Analyzer v4.0.0-prealpha (f3082e4) (w)1999-2022 BSI
+[*] Mon Dec  8 22:15:14 2025
+[*]
+[dumpfile] "/Users/cchaine/Desktop/Documents/projects/.ecap5.nosync/design/wbspi/build/tests/waves/spi_prescaler.vcd"
+[dumpfile_mtime] "Mon Dec  8 22:13:56 2025"
+[dumpfile_size] 11949
+[savefile] "/Users/cchaine/Desktop/Documents/projects/.ecap5.nosync/design/wbspi/config/gtkwave/config/spi_prescaler.gtkw"
+[timestart] 102
+[size] 1333 679
+[pos] -1 -1
+*-6.414142 284 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[markername] AA
+[markername] BB
+[markername] CC
+[markername] DD
+[markername] EE
+[markername] FF
+[markername] GG
+[markername] HH
+[markername] II
+[markername] JJ
+[markername] KK
+[markername] LL
+[markername] MM
+[markername] NN
+[markername] OO
+[markername] PP
+[markername] QQ
+[markername] RR
+[markername] SS
+[markername] TT
+[markername] UU
+[markername] VV
+[markername] WW
+[markername] XX
+[markername] YY
+[markername] ZZ
+[treeopen] TOP.
+[treeopen] TOP.tb_spi_prescaler.
+[sst_width] 255
+[signals_width] 202
+[sst_expanded] 1
+[sst_vpaned_height] 187
+@24
+[color] 1
+TOP.tb_spi_prescaler.testcase[31:0]
+@28
+TOP.tb_spi_prescaler.clk_i
+TOP.tb_spi_prescaler.rst_i
+[color] 2
+TOP.tb_spi_prescaler.prescaler_stb_i
+@22
+[color] 2
+TOP.tb_spi_prescaler.prescaler_i[15:0]
+@28
+[color] 2
+TOP.tb_spi_prescaler.cs_i
+@22
+TOP.tb_spi_prescaler.dut.prescaler_ctr_q[15:0]
+@28
+[color] 6
+TOP.tb_spi_prescaler.prescaled_clk_o
+[color] 6
+TOP.tb_spi_prescaler.high_pulse_o
+[color] 6
+TOP.tb_spi_prescaler.low_pulse_o
+[pattern_trace] 1
+[pattern_trace] 0

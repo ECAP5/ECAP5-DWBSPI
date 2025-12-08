@@ -35,6 +35,9 @@ enum CondId {
 };
 
 enum TestcaseId {
+  T_RESET = 0,
+  T_CHIP_SELECT = 1,
+  T_PULSE = 1
 };
 
 enum StateId {
@@ -43,6 +46,8 @@ enum StateId {
 class TB_Spi_prescaler : public Testbench<Vtb_spi_prescaler> {
 public:
   void reset() {
+    this->_nop();
+
     this->core->rst_i = 1;
     for(int i = 0; i < 5; i++) {
       this->tick();
@@ -51,7 +56,47 @@ public:
 
     Testbench<Vtb_spi_prescaler>::reset();
   }
+
+  void _nop() {
+    this->core->cs_i = 0;
+    this->core->prescaler_stb_i = 0;
+    this->core->prescaler_i = 0;
+  }
 };
+
+void tb_spi_prescaler_reset(TB_Spi_prescaler * tb) {
+  Vtb_spi_prescaler * core = tb->core;
+  core->testcase = T_RESET;
+
+  tb->reset();
+
+  tb->n_tick(10);
+}
+
+void tb_spi_prescaler_chip_select(TB_Spi_prescaler * tb) {
+  Vtb_spi_prescaler * core = tb->core;
+  core->testcase = T_CHIP_SELECT;
+
+  tb->reset();
+
+  core->cs_i = 1;
+  core->prescaler_stb_i = 1;
+  core->prescaler_i = 10;
+
+  tb->tick();
+
+  core->prescaler_stb_i = 0;
+
+  tb->n_tick(120);
+}
+
+void tb_spi_prescaler_pulse(TB_Spi_prescaler * tb) {
+  Vtb_spi_prescaler * core = tb->core;
+  core->testcase = T_PULSE;
+
+  tb->reset();
+}
+
 
 int main(int argc, char ** argv, char ** env) {
   srand(time(NULL));
@@ -66,6 +111,10 @@ int main(int argc, char ** argv, char ** env) {
   tb->init_conditions(__CondIdEnd);
 
   /************************************************************/
+
+  tb_spi_prescaler_reset(tb);
+  tb_spi_prescaler_chip_select(tb);
+  tb_spi_prescaler_pulse(tb);
 
   /************************************************************/
 
