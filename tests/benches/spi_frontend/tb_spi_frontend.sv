@@ -20,50 +20,49 @@
  * along with ECAP5-DWBSPI.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-module tb_ecap5_dwbspi
+module tb_spi_frontend
 (
   input   int          testcase,
 
-  input   logic         clk_i,
-  input   logic         rst_i,
+  input   logic  clk_i,
+  input   logic  rst_i,
 
   //=================================
-  //    Memory interface
+  //    Internal interface
+  
+  input   logic  cs_i,
+  input   logic  prescaled_clk_i,
+  input   logic  high_pulse_i,
+  input   logic  low_pulse_i,
 
-  input   logic[31:0]  wb_adr_i,
-  output  logic[31:0]  wb_dat_o,
-  input   logic[31:0]  wb_dat_i,
-  input   logic        wb_we_i,
-  input   logic[3:0]   wb_sel_i,
-  input   logic        wb_stb_i,
-  output  logic        wb_ack_o,
-  input   logic        wb_cyc_i,
-  output  logic        wb_stall_o,
+  input   logic  transmit_i,
+  input   logic[7:0]  transmit_data_i,
+  output  logic[7:0]  received_data_o,
+  output  logic  transmit_done_o,
 
   //=================================
   //    SPI interface
 
-  output logic spi_cs_o,
-  output logic spi_clk_o,
-  output logic spi_mosi_o,
-  input  logic spi_miso_i,
-  input logic probe
+  output  logic  spi_cs_o,
+  output  logic  spi_clk_o,
+  output  logic  spi_mosi_o,
+  input   logic  spi_miso_i
 );
 
-ecap5_dwbspi #(
+spi_frontend #(
 ) dut (
   .clk_i           (clk_i),
   .rst_i           (rst_i),
 
-  .wb_adr_i   (wb_adr_i),
-  .wb_dat_o   (wb_dat_o),
-  .wb_dat_i   (wb_dat_i),
-  .wb_we_i    (wb_we_i),
-  .wb_sel_i   (wb_sel_i),
-  .wb_stb_i   (wb_stb_i),
-  .wb_ack_o   (wb_ack_o),
-  .wb_cyc_i   (wb_cyc_i),
-  .wb_stall_o (wb_stall_o),
+  .cs_i (cs_i),
+  .prescaled_clk_i (prescaled_clk_i),
+  .high_pulse_i (high_pulse_i),
+  .low_pulse_i (low_pulse_i),
+
+  .transmit_i (transmit_i),
+  .transmit_data_i (transmit_data_i),
+  .received_data_o (received_data_o),
+  .transmit_done_o (transmit_done_o),
 
   .spi_cs_o (spi_cs_o),
   .spi_clk_o (spi_clk_o),
@@ -71,14 +70,5 @@ ecap5_dwbspi #(
   .spi_miso_i (spi_miso_i)
 );
 
-endmodule // tb_ecap5_dwbspi
+endmodule // tb_spi_frontend
 
-`verilator_config
-
-public -module "ecap5_dwbspi" -var "high_pulse"
-public -module "ecap5_dwbspi" -var "transmit_done"
-
-public -module "ecap5_dwbspi" -var "cr_prescaler_q"
-public -module "ecap5_dwbspi" -var "cr_cs_q"
-
-public -module "ecap5_dwbspi" -var "sr_txe_q"
