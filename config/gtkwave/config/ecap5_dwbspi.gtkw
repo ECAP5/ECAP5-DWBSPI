@@ -1,0 +1,79 @@
+[*]
+[*] GTKWave Analyzer v4.0.0-prealpha (f3082e4) (w)1999-2022 BSI
+[*] Tue Dec 23 14:11:12 2025
+[*]
+[dumpfile] "/Users/cchaine/Desktop/Documents/projects/.ecap5.nosync/design/wbspi/build/tests/waves/ecap5_dwbspi.vcd"
+[dumpfile_mtime] "Tue Dec 23 14:10:40 2025"
+[dumpfile_size] 6906
+[savefile] "/Users/cchaine/Desktop/Documents/projects/.ecap5.nosync/design/wbspi/config/gtkwave/config/ecap5_dwbspi.gtkw"
+[timestart] 1
+[size] 1333 679
+[pos] -1 -1
+*-5.843979 -1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[markername] AA
+[markername] BB
+[markername] CC
+[markername] DD
+[markername] EE
+[markername] FF
+[markername] GG
+[markername] HH
+[markername] II
+[markername] JJ
+[markername] KK
+[markername] LL
+[markername] MM
+[markername] NN
+[markername] OO
+[markername] PP
+[markername] QQ
+[markername] RR
+[markername] SS
+[markername] TT
+[markername] UU
+[markername] VV
+[markername] WW
+[markername] XX
+[markername] YY
+[markername] ZZ
+[treeopen] TOP.
+[treeopen] TOP.tb_ecap5_dwbspi.
+[sst_width] 255
+[signals_width] 144
+[sst_expanded] 1
+[sst_vpaned_height] 187
+@2025
+[color] 1
+^1 /Users/cchaine/Desktop/Documents/projects/.ecap5.nosync/design/wbspi/config/gtkwave/filters/ecap5_dwbspi_testcase_filter.gtkw
+TOP.tb_ecap5_dwbspi.testcase[31:0]
+@28
+TOP.tb_ecap5_dwbspi.clk_i
+TOP.tb_ecap5_dwbspi.rst_i
+@22
+[color] 2
+TOP.tb_ecap5_dwbspi.wb_adr_i[31:0]
+[color] 2
+TOP.tb_ecap5_dwbspi.wb_dat_i[31:0]
+[color] 2
+TOP.tb_ecap5_dwbspi.wb_dat_o[31:0]
+[color] 2
+TOP.tb_ecap5_dwbspi.wb_sel_i[3:0]
+@28
+[color] 2
+TOP.tb_ecap5_dwbspi.wb_we_i
+[color] 2
+TOP.tb_ecap5_dwbspi.wb_stb_i
+[color] 2
+TOP.tb_ecap5_dwbspi.wb_ack_o
+[color] 2
+TOP.tb_ecap5_dwbspi.wb_cyc_i
+[color] 7
+TOP.tb_ecap5_dwbspi.spi_clk_o
+[color] 7
+TOP.tb_ecap5_dwbspi.spi_cs_o
+[color] 7
+TOP.tb_ecap5_dwbspi.spi_miso_i
+[color] 7
+TOP.tb_ecap5_dwbspi.spi_mosi_o
+[pattern_trace] 1
+[pattern_trace] 0

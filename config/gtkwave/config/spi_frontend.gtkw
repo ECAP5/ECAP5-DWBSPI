@@ -1,0 +1,83 @@
+[*]
+[*] GTKWave Analyzer v4.0.0-prealpha (f3082e4) (w)1999-2022 BSI
+[*] Tue Dec 23 10:11:46 2025
+[*]
+[dumpfile] "/Users/cchaine/Desktop/Documents/projects/.ecap5.nosync/design/wbspi/build/tests/waves/spi_frontend.vcd"
+[dumpfile_mtime] "Tue Dec 23 10:11:31 2025"
+[dumpfile_size] 7897
+[savefile] "/Users/cchaine/Desktop/Documents/projects/.ecap5.nosync/design/wbspi/config/gtkwave/config/spi_frontend.gtkw"
+[timestart] 753
+[size] 1280 679
+[pos] -1 -1
+*-6.964116 1090 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[markername] AA
+[markername] BB
+[markername] CC
+[markername] DD
+[markername] EE
+[markername] FF
+[markername] GG
+[markername] HH
+[markername] II
+[markername] JJ
+[markername] KK
+[markername] LL
+[markername] MM
+[markername] NN
+[markername] OO
+[markername] PP
+[markername] QQ
+[markername] RR
+[markername] SS
+[markername] TT
+[markername] UU
+[markername] VV
+[markername] WW
+[markername] XX
+[markername] YY
+[markername] ZZ
+[treeopen] TOP.
+[treeopen] TOP.tb_spi_frontend.
+[sst_width] 255
+[signals_width] 193
+[sst_expanded] 1
+[sst_vpaned_height] 332
+@2024
+[color] 1
+^1 /Users/cchaine/Desktop/Documents/projects/.ecap5.nosync/design/wbspi/config/gtkwave/filters/spi_frontend_testcase_filter.gtkw
+TOP.testcase[31:0]
+@28
+TOP.clk_i
+TOP.rst_i
+[color] 2
+TOP.cs_i
+[color] 2
+TOP.prescaled_clk_i
+[color] 2
+TOP.high_pulse_i
+[color] 2
+TOP.low_pulse_i
+[color] 2
+TOP.transmit_i
+@22
+[color] 2
+TOP.transmit_data_i[7:0]
+@2024
+[color] 3
+^2 /Users/cchaine/Desktop/Documents/projects/.ecap5.nosync/design/wbspi/config/gtkwave/filters/spi_frontend_state_filter.gtkw
+TOP.tb_spi_frontend.dut.state_q[31:0]
+@28
+[color] 6
+TOP.spi_clk_o
+[color] 6
+TOP.spi_cs_o
+[color] 6
+TOP.spi_miso_i
+TOP.tb_spi_frontend.dut.spi_miso_qq
+[color] 6
+TOP.spi_mosi_o
+TOP.transmit_done_o
+@23
+TOP.tb_spi_frontend.received_data_o[7:0]
+[pattern_trace] 1
+[pattern_trace] 0
