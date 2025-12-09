@@ -1,0 +1,49 @@
+[*]
+[*] GTKWave Analyzer v4.0.0-prealpha (f3082e4) (w)1999-2022 BSI
+[*] Tue Dec  9 15:58:57 2025
+[*]
+[dumpfile] "/Users/cchaine/Desktop/Documents/projects/.ecap5.nosync/design/wbspi/build/tests/waves/spi_frontend.vcd"
+[dumpfile_mtime] "Tue Dec  9 15:57:30 2025"
+[dumpfile_size] 2674
+[savefile] "/Users/cchaine/Desktop/Documents/projects/.ecap5.nosync/design/wbspi/config/gtkwave/config/spi_frontend.gtkw"
+[timestart] 1
+[size] 1920 955
+[pos] -1 -1
+*-4.936037 17 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[treeopen] TOP.
+[sst_width] 255
+[signals_width] 152
+[sst_expanded] 1
+[sst_vpaned_height] 283
+@24
+[color] 1
+TOP.testcase[31:0]
+@28
+TOP.clk_i
+TOP.rst_i
+@29
+[color] 2
+TOP.cs_i
+[color] 2
+TOP.prescaled_clk_i
+[color] 2
+TOP.high_pulse_i
+[color] 2
+TOP.low_pulse_i
+[color] 2
+TOP.transmit_data_i
+[color] 2
+TOP.transmit_i
+@28
+[color] 6
+TOP.spi_clk_o
+[color] 6
+TOP.spi_cs_o
+[color] 6
+TOP.spi_miso_i
+[color] 6
+TOP.spi_mosi_o
+TOP.transmit_done_o
+TOP.received_data_o
+[pattern_trace] 1
+[pattern_trace] 0

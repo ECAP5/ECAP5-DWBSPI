@@ -22,139 +22,98 @@
 
 module spi_frontend #(
 )(
-  input   logic         clk_i,
-  input   logic         rst_i,
+  input   logic  clk_i,
+  input   logic  rst_i,
 
   //=================================
   //    Internal interface
   
-  input logic cs_i,
-  
-  input   logic        transmit_i,
-  input  logic        high_pulse_i,
-  input  logic        low_pulse_i,
+  input   logic  cs_i,
+  input   logic  prescaled_clk_i,
+  input   logic  high_pulse_i,
+  input   logic  low_pulse_i,
+
+  input   logic  transmit_i,
+  input   logic  transmit_data_i,
+  output  logic  received_data_o,
+  output  logic  transmit_done_o,
 
   //=================================
   //    SPI interface
 
-  output logic spi_cs_o,
-  output logic spi_clk_o,
-  output logic spi_mosi_o,
-  input  logic spi_miso_i
+  output  logic  spi_cs_o,
+  output  logic  spi_clk_o,
+  output  logic  spi_mosi_o,
+  input   logic  spi_miso_i
 );
-
-typedef enum {
-  IDLE,    // 0
-  TX_ONLY, // 1
-  TX,      // 2
-  RX,      // 3
-  RX_ONLY  // 4
-} state_t;
 
 /*****************************************/
 /*           Internal signals            */
 /*****************************************/
 
-state_t state_d, state_q;
-
 logic spi_miso_q, spi_miso_qq;
 
-logic[9:0] bit_cnt_d, bit_cnt_q;
-logic[7:0] tx_shift_reg_d, tx_shift_reg_q;
-logic[7:0] rx_shift_reg_d, rx_shift_reg_q;
+logic transmit_ongoing_d, transmit_ongoing_q;
+logic transmit_done_d, transmit_done_q;
 
-logic spi_clk_d, spi_clk_q;
+logic[7:0] shift_reg_d, shift_reg_q;
+logic[7:0] received_data_d, received_data_q;
+logic[2:0] bit_cnt_d, bit_cnt_q;
 
 /*****************************************/
 
-always_comb begin : state_machine
-  state_d = state_q;
-
-  case(state_q)
-    IDLE: begin
-      if(transmit_i) begin
-        state_d = TX_ONLY;
-      end
-    end
-    TX_ONLY: begin
-      if(high_pulse_i) begin
-        // Transmit the first two bits while the input metastability is dealt with
-        if(bit_cnt_q[7] == 1) begin
-          state_d = RX;
-        end
-      end
-    end
-    TX: begin
-      if(high_pulse_i) begin
-        state_d = RX;
-      end
-    end
-    RX: begin
-      if(low_pulse_i) begin
-        if(bit_cnt_q[2] == 1) begin
-          state_d = RX_ONLY;
-        end else begin
-          state_d = TX;
-        end
-      end
-    end
-    RX_ONLY: begin
-      if(low_pulse_i) begin
-        // Receive the last two bits
-        if(bit_cnt_q[0] == 1) begin
-          state_d = IDLE;
-        end
-      end
-    end
-  endcase
-end
-
-always_comb begin : bit_cnt
+always_comb begin
+  transmit_ongoing_d = transmit_ongoing_q;
+  shift_reg_d = shift_reg_q;
   bit_cnt_d = bit_cnt_q;
+  transmit_done_d = 0;
+  received_data_d = received_data_q;
 
-  // Initialize the bit counter
-  if(state_q == IDLE && transmit_i) begin
-    bit_cnt_d = {1'b1, 9'b0};;
-  end
-
-  // Shift the bit counter
-  if(state_q != IDLE) begin
-    bit_cnt_d = {1'b0, bit_cnt_q[9:1]};
-  end
-end
-
-always_comb begin : clk_generation
-  spi_clk_d = spi_clk_q;
-
-  if(state_q != IDLE) begin
+  if(transmit_ongoing_q == 0) begin
+    if(transmit_i) begin
+      transmit_ongoing_d = 1;
+      bit_cnt_d = 7;
+    end
+  end else begin
     if(high_pulse_i) begin
-      spi_clk_d = 1; 
-    end
+      shift_reg_d = {shift_reg_q[6:0], spi_miso_qq}; 
+    end 
+
     if(low_pulse_i) begin
-      spi_clk_d = 0;
+      // increment the bit counter
+      bit_cnt_d = bit_cnt_q - 1; 
+      if(bit_cnt_q == 0) begin
+        transmit_ongoing_d = 0;
+        transmit_done_d = 1;
+        received_data_d = {shift_reg_q[6:0], spi_miso_qq};
+      end
     end
-  end 
+  end
 end
 
 always_ff @(posedge clk_i) begin
   if(rst_i) begin
-    state_q <= IDLE;
-
-    spi_clk_q <= 0;
-
     spi_miso_q <= 0;
     spi_miso_qq <= 0;
+    transmit_ongoing_q <= 0;
+    shift_reg_q <= '0;
+    bit_cnt_q <= '0;
+    transmit_done_q <= 0;
+    received_data_q <= '0;
   end else begin
-    state_q <= state_d;
-
-    spi_clk_q <= spi_clk_d;
-
     spi_miso_q <= spi_miso_i;
     spi_miso_qq <= spi_miso_q;
+
+    transmit_ongoing_q <= transmit_ongoing_d;
+    shift_reg_q <= shift_reg_d;
+    bit_cnt_q <= bit_cnt_d;
+    transmit_done_q <= transmit_done_d;
+    received_data_q <= received_data_d;
   end
 end
 
+assign spi_clk_o = prescaled_clk_i;
 assign spi_cs_o = cs_i;
-assign spi_clk_o = spi_clk_q;
+assign spi_mosi_o = (transmit_ongoing_q) ? shift_reg_q[7] : 1'b0;
 
 endmodule // spi_frontend

@@ -35,6 +35,8 @@ enum CondId {
 };
 
 enum TestcaseId {
+  T_RESET = 0,
+  T_TRANSMIT = 1
 };
 
 enum StateId {
@@ -43,6 +45,8 @@ enum StateId {
 class TB_Spi_frontend : public Testbench<Vtb_spi_frontend> {
 public:
   void reset() {
+    this->_nop();
+
     this->core->rst_i = 1;
     for(int i = 0; i < 5; i++) {
       this->tick();
@@ -51,7 +55,44 @@ public:
 
     Testbench<Vtb_spi_frontend>::reset();
   }
+
+  void _nop() {
+    core->cs_i = 0;
+    core->prescaled_clk_i = 0;
+    core->high_pulse_i = 0;
+    core->low_pulse_i = 0;
+    core->transmit_i = 0;
+    core->transmit_data_i = 0;
+    core->spi_miso_i = 0;
+  }
 };
+
+void tb_spi_frontend_reset(TB_Spi_frontend * tb) {
+  Vtb_spi_frontend * core = tb->core;
+  core->testcase = T_RESET;
+
+  tb->reset();
+
+  tb->n_tick(10);
+}
+
+void tb_spi_frontend_transmit(TB_Spi_frontend * tb) {
+  Vtb_spi_frontend * core = tb->core;
+  core->testcase = T_TRANSMIT;
+
+  tb->reset();
+
+  core->cs_i = 1;
+
+  core->transmit_i = 1;
+  core->transmit_data_i = 0xA5;
+
+  tb->tick();
+
+  core->transmit_i = 0;
+
+  tb->n_tick(10);
+}
 
 int main(int argc, char ** argv, char ** env) {
   srand(time(NULL));
@@ -66,6 +107,9 @@ int main(int argc, char ** argv, char ** env) {
   tb->init_conditions(__CondIdEnd);
 
   /************************************************************/
+
+  tb_spi_frontend_reset(tb);
+  tb_spi_frontend_transmit(tb);
 
   /************************************************************/
 

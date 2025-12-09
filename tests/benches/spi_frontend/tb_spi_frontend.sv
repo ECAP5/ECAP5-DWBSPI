@@ -24,25 +24,29 @@ module tb_spi_frontend
 (
   input   int          testcase,
 
-  input   logic         clk_i,
-  input   logic         rst_i,
+  input   logic  clk_i,
+  input   logic  rst_i,
 
   //=================================
   //    Internal interface
   
-  input   logic        cs_i,
-  
-  input   logic        transmit_i,
-  input  logic        high_pulse_i,
-  input  logic        low_pulse_i,
+  input   logic  cs_i,
+  input   logic  prescaled_clk_i,
+  input   logic  high_pulse_i,
+  input   logic  low_pulse_i,
+
+  input   logic  transmit_i,
+  input   logic  transmit_data_i,
+  output  logic  received_data_o,
+  output  logic  transmit_done_o,
 
   //=================================
   //    SPI interface
 
-  output logic spi_cs_o,
-  output logic spi_clk_o,
-  output logic spi_mosi_o,
-  input  logic spi_miso_i
+  output  logic  spi_cs_o,
+  output  logic  spi_clk_o,
+  output  logic  spi_mosi_o,
+  input   logic  spi_miso_i
 );
 
 spi_frontend #(
@@ -51,9 +55,14 @@ spi_frontend #(
   .rst_i           (rst_i),
 
   .cs_i (cs_i),
-  .transmit_i (transmit_i),
+  .prescaled_clk_i (prescaled_clk_i),
   .high_pulse_i (high_pulse_i),
   .low_pulse_i (low_pulse_i),
+
+  .transmit_i (transmit_i),
+  .transmit_data_i (transmit_data_i),
+  .received_data_o (received_data_o),
+  .transmit_done_o (transmit_done_o),
 
   .spi_cs_o (spi_cs_o),
   .spi_clk_o (spi_clk_o),
