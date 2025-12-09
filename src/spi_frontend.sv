@@ -34,7 +34,7 @@ module spi_frontend #(
   input   logic  low_pulse_i,
 
   input   logic  transmit_i,
-  input   logic  transmit_data_i,
+  input   logic[7:0]  transmit_data_i,
   output  logic  received_data_o,
   output  logic  transmit_done_o,
 
@@ -64,15 +64,20 @@ logic[2:0] bit_cnt_d, bit_cnt_q;
 
 always_comb begin
   transmit_ongoing_d = transmit_ongoing_q;
+  transmit_done_d = 0;
+
   shift_reg_d = shift_reg_q;
   bit_cnt_d = bit_cnt_q;
-  transmit_done_d = 0;
+
   received_data_d = received_data_q;
 
+  // When we are idle
   if(transmit_ongoing_q == 0) begin
+    // If a transmit request has been raised
     if(transmit_i) begin
       transmit_ongoing_d = 1;
       bit_cnt_d = 7;
+      shift_reg_d = transmit_data_i;
     end
   end else begin
     if(high_pulse_i) begin
@@ -95,22 +100,29 @@ always_ff @(posedge clk_i) begin
   if(rst_i) begin
     spi_miso_q <= 0;
     spi_miso_qq <= 0;
+
     transmit_ongoing_q <= 0;
+    transmit_done_q <= 0;
+
     shift_reg_q <= '0;
     bit_cnt_q <= '0;
-    transmit_done_q <= 0;
+
     received_data_q <= '0;
   end else begin
     spi_miso_q <= spi_miso_i;
     spi_miso_qq <= spi_miso_q;
 
     transmit_ongoing_q <= transmit_ongoing_d;
+    transmit_done_q <= transmit_done_d;
+
     shift_reg_q <= shift_reg_d;
     bit_cnt_q <= bit_cnt_d;
-    transmit_done_q <= transmit_done_d;
+
     received_data_q <= received_data_d;
   end
 end
+
+assign transmit_done_o = transmit_done_q;
 
 assign spi_clk_o = prescaled_clk_i;
 assign spi_cs_o = cs_i;

@@ -31,6 +31,7 @@
 #include "testbench.h"
 
 enum CondId {
+  COND_transmit,
   __CondIdEnd
 };
 
@@ -74,6 +75,13 @@ void tb_spi_frontend_reset(TB_Spi_frontend * tb) {
   tb->reset();
 
   tb->n_tick(10);
+
+  //`````````````````````````````````
+  //      Formal Checks 
+  
+  CHECK("tb_ecap5_dwbuart.reset.01",
+      tb->conditions[COND_transmit],
+      "Failed to implement the frontend transmit", tb->err_cycles[COND_transmit]);
 }
 
 void tb_spi_frontend_transmit(TB_Spi_frontend * tb) {
@@ -84,6 +92,8 @@ void tb_spi_frontend_transmit(TB_Spi_frontend * tb) {
 
   core->cs_i = 1;
 
+  tb->tick();
+
   core->transmit_i = 1;
   core->transmit_data_i = 0xA5;
 
@@ -91,7 +101,38 @@ void tb_spi_frontend_transmit(TB_Spi_frontend * tb) {
 
   core->transmit_i = 0;
 
-  tb->n_tick(10);
+  core->high_pulse_i = 1;
+
+  tb->tick();
+
+  core->prescaled_clk_i = 1;
+  core->high_pulse_i = 0;
+  tb->tick();
+  core->low_pulse_i = 1;
+  tb->tick();
+  core->prescaled_clk_i = 0;
+  core->low_pulse_i = 0;
+  tb->tick();
+
+  for(int i = 0; i < 7; i++) {
+    core->high_pulse_i = 1;
+    tb->tick();
+    core->prescaled_clk_i = 1;
+    core->high_pulse_i = 0;
+    tb->tick();
+    core->low_pulse_i = 1;
+    tb->tick();
+    core->prescaled_clk_i = 0;
+    core->low_pulse_i = 0;
+    tb->tick();
+  }
+
+  //`````````````````````````````````
+  //      Formal Checks 
+  
+  CHECK("tb_ecap5_dwbuart.transmit.01",
+      tb->conditions[COND_transmit],
+      "Failed to implement the frontend transmit", tb->err_cycles[COND_transmit]);
 }
 
 int main(int argc, char ** argv, char ** env) {
@@ -99,6 +140,7 @@ int main(int argc, char ** argv, char ** env) {
   Verilated::traceEverOn(true);
 
   bool verbose = parse_verbose(argc, argv);
+  verbose = 1;
 
   TB_Spi_frontend * tb = new TB_Spi_frontend;
   tb->open_trace("waves/spi_frontend.vcd");

@@ -36,7 +36,7 @@ module tb_spi_frontend
   input   logic  low_pulse_i,
 
   input   logic  transmit_i,
-  input   logic  transmit_data_i,
+  input   logic[7:0]  transmit_data_i,
   output  logic  received_data_o,
   output  logic  transmit_done_o,
 

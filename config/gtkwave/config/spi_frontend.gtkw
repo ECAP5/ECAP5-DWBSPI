@@ -1,18 +1,44 @@
 [*]
 [*] GTKWave Analyzer v4.0.0-prealpha (f3082e4) (w)1999-2022 BSI
-[*] Tue Dec  9 15:58:57 2025
+[*] Tue Dec  9 21:46:32 2025
 [*]
 [dumpfile] "/Users/cchaine/Desktop/Documents/projects/.ecap5.nosync/design/wbspi/build/tests/waves/spi_frontend.vcd"
-[dumpfile_mtime] "Tue Dec  9 15:57:30 2025"
-[dumpfile_size] 2674
+[dumpfile_mtime] "Tue Dec  9 21:46:02 2025"
+[dumpfile_size] 3729
 [savefile] "/Users/cchaine/Desktop/Documents/projects/.ecap5.nosync/design/wbspi/config/gtkwave/config/spi_frontend.gtkw"
-[timestart] 1
-[size] 1920 955
+[timestart] 159
+[size] 1333 679
 [pos] -1 -1
-*-4.936037 17 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+*-6.471540 156 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[markername] AA
+[markername] BB
+[markername] CC
+[markername] DD
+[markername] EE
+[markername] FF
+[markername] GG
+[markername] HH
+[markername] II
+[markername] JJ
+[markername] KK
+[markername] LL
+[markername] MM
+[markername] NN
+[markername] OO
+[markername] PP
+[markername] QQ
+[markername] RR
+[markername] SS
+[markername] TT
+[markername] UU
+[markername] VV
+[markername] WW
+[markername] XX
+[markername] YY
+[markername] ZZ
 [treeopen] TOP.
 [sst_width] 255
-[signals_width] 152
+[signals_width] 193
 [sst_expanded] 1
 [sst_vpaned_height] 283
 @24
@@ -21,7 +47,6 @@ TOP.testcase[31:0]
 @28
 TOP.clk_i
 TOP.rst_i
-@29
 [color] 2
 TOP.cs_i
 [color] 2
@@ -31,9 +56,10 @@ TOP.high_pulse_i
 [color] 2
 TOP.low_pulse_i
 [color] 2
-TOP.transmit_data_i
-[color] 2
 TOP.transmit_i
+@23
+[color] 2
+TOP.transmit_data_i[7:0]
 @28
 [color] 6
 TOP.spi_clk_o

@@ -26,7 +26,7 @@ module spi_prescaler #(
   input   logic        rst_i,
 
   input   logic        cs_i,
-  input   logic        prescaler_stb_i,
+  input   logic        transmit_i,
   input   logic[15:0]  prescaler_i,
 
   output  logic        high_pulse_o,
@@ -79,7 +79,7 @@ always_comb begin : prescaler
   end
 
   // if the prescaler has been updated
-  if(prescaler_stb_i) begin
+  if(transmit_i) begin
     prescaler_d = prescaler_i;
     prescaler_ctr_d = {1'b0, prescaler_i[15:1]} - 1;
   end 
