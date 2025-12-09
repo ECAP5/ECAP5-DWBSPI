@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v4.0.0-prealpha (f3082e4) (w)1999-2022 BSI
-[*] Mon Dec  8 22:15:14 2025
+[*] Tue Dec  9 15:38:52 2025
 [*]
 [dumpfile] "/Users/cchaine/Desktop/Documents/projects/.ecap5.nosync/design/wbspi/build/tests/waves/spi_prescaler.vcd"
-[dumpfile_mtime] "Mon Dec  8 22:13:56 2025"
-[dumpfile_size] 11949
+[dumpfile_mtime] "Tue Dec  9 15:38:37 2025"
+[dumpfile_size] 10647
 [savefile] "/Users/cchaine/Desktop/Documents/projects/.ecap5.nosync/design/wbspi/config/gtkwave/config/spi_prescaler.gtkw"
-[timestart] 102
+[timestart] 253
 [size] 1333 679
 [pos] -1 -1
-*-6.414142 284 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+*-6.414142 310 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 [markername] AA
 [markername] BB
 [markername] CC
@@ -39,9 +39,9 @@
 [treeopen] TOP.
 [treeopen] TOP.tb_spi_prescaler.
 [sst_width] 255
-[signals_width] 202
+[signals_width] 270
 [sst_expanded] 1
-[sst_vpaned_height] 187
+[sst_vpaned_height] 219
 @24
 [color] 1
 TOP.tb_spi_prescaler.testcase[31:0]

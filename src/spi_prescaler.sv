@@ -34,17 +34,11 @@ module spi_prescaler #(
   output  logic        prescaled_clk_o
 );
 
-typedef enum {
-  HIGH = 0,
-  LOW = 1
-} state_t;
-
 /*****************************************/
 /*           Internal signals            */
 /*****************************************/
 
-state_t state_d, state_q;
-
+logic[15:0] prescaler_d, prescaler_q;
 logic[15:0] prescaler_ctr_d, prescaler_ctr_q;
 
 logic high_pulse_d, high_pulse_q;
@@ -55,61 +49,45 @@ logic prescaled_clk_d, prescaled_clk_q;
 /*****************************************/
 
 always_comb begin : prescaler
-  prescaler_ctr_d = prescaler_ctr_q;
+  prescaler_d = prescaler_q;
+  prescaled_clk_d = prescaled_clk_q;
   high_pulse_d = 0;
   low_pulse_d = 0;
 
-  /* Decrement the counter if CS is high */
   if(cs_i) begin
-    prescaler_ctr_d = prescaler_ctr_q - 1;
-  end
+    // if the prescaler has elapsed
+    if(prescaler_ctr_q == 16'b0) begin
+      // reload the prescaler counter
+      prescaler_ctr_d = {1'b0, prescaler_q[15:1]} - 1; 
 
-  /* Load the prescaler if :
-   *   - the prescaler value shall be loaded
-   *   - the prescaler counter has elapsed
-   */ 
-  if(prescaler_stb_i || prescaler_ctr_q == 16'b0) begin
-    prescaler_ctr_d = {1'b0, prescaler_i[15:1]};
+      // toggle the clk
+      prescaled_clk_d = ~prescaled_clk_q;
 
-    // The high pulse is as soon as possible
-    if(state_q == HIGH) begin
-      high_pulse_d = 1;
-    end
-  end
-
-  // The low pulse is as late as possible
-  if(prescaler_ctr_q == 16'b1) begin
-    if(state_q == LOW) begin
-      low_pulse_d = 1;
-    end
-  end
-end
-
-always_comb begin : state_machine
-  state_d = state_q;
-  prescaled_clk_d = prescaled_clk_q;
-
-  case(state_q)
-    HIGH: begin
-      prescaled_clk_d = 1;
-      if(prescaler_ctr_q == 16'b1) begin
-        state_d = LOW;
+      // toggle the pulse
+      if(~prescaled_clk_q) begin
+        high_pulse_d = 1;
+      end else begin
+        low_pulse_d = 1;
       end
+    end else begin
+      prescaler_ctr_d = prescaler_ctr_q - 1;
     end
-    LOW: begin
-      prescaled_clk_d = 0;
-      if(prescaler_ctr_q == 16'b1) begin
-        state_d = HIGH;
-      end
-    end
-    default: begin end
-  endcase
+  end else begin
+    // reset the prescaler
+    prescaler_ctr_d = 16'b0;
+    prescaled_clk_d = 1'b0;
+  end
+
+  // if the prescaler has been updated
+  if(prescaler_stb_i) begin
+    prescaler_d = prescaler_i;
+    prescaler_ctr_d = {1'b0, prescaler_i[15:1]} - 1;
+  end 
 end
 
 always_ff @(posedge clk_i) begin
   if(rst_i) begin
-    state_q <= HIGH;
-
+    prescaler_q <= '0;
     prescaler_ctr_q  <=  '0;
 
     high_pulse_q     <=  0;
@@ -117,8 +95,7 @@ always_ff @(posedge clk_i) begin
 
     prescaled_clk_q <= 0;
   end else begin
-    state_q <= state_d;
-
+    prescaler_q <= prescaler_d;
     prescaler_ctr_q  <=  prescaler_ctr_d;
 
     high_pulse_q     <=  high_pulse_d;
@@ -128,9 +105,9 @@ always_ff @(posedge clk_i) begin
   end
 end
 
-assign high_pulse_o = high_pulse_q & cs_i;
-assign low_pulse_o = low_pulse_q & cs_i;
+assign high_pulse_o = high_pulse_q;
+assign low_pulse_o = low_pulse_q;
 
-assign prescaled_clk_o = prescaled_clk_q & cs_i;
+assign prescaled_clk_o = prescaled_clk_q;
 
 endmodule // spi_prescaler
