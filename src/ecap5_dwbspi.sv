@@ -21,10 +21,10 @@
  */
 
 module ecap5_dwbspi #(
-  localparam SPI_SR = 0,
-  localparam SPI_CR = 1,
-  localparam SPI_RXDR = 2,
-  localparam SPI_TXDR = 3
+  localparam logic[2:0] SPI_SR = 0,
+  localparam logic[2:0] SPI_CR = 1,
+  localparam logic[2:0] SPI_RXDR = 2,
+  localparam logic[2:0] SPI_TXDR = 3
 )(
   input   logic         clk_i,
   input   logic         rst_i,
@@ -137,7 +137,7 @@ always_comb begin : register_access
   mem_write_cr_d = 0;
 
   // Set the data output for read requests
-  case(mem_addr[7:2])
+  case(mem_addr[4:2])
     SPI_SR:   mem_read_data_d = {31'b0, sr_txe_q};
     SPI_CR:   mem_read_data_d = {cr_prescaler_q, 15'b0, cr_cs_q};
     SPI_RXDR: mem_read_data_d = {24'b0, rxdr_rxd_q};
@@ -146,7 +146,7 @@ always_comb begin : register_access
 
   // Set the register data for write requests
   if(mem_write) begin
-    case(mem_addr[7:2])
+    case(mem_addr[4:2])
       SPI_CR: begin
         cr_prescaler_d  =  mem_write_data[31:16];
         cr_cs_d         =  mem_write_data[0];
@@ -156,6 +156,7 @@ always_comb begin : register_access
         txdr_txd_d = mem_write_data[7:0];
         transmit_d = 1;
       end
+      default: begin end
     endcase
   end
 
